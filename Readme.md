@@ -1,7 +1,9 @@
 # CommentThread
 Disqus clone in Japronto framework (for learning purposes)
 
-To do list:
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+### To do list:
   - Implement templating system in Jinja2 for thread div
   - CSS + ajax calls
   - Apis:
@@ -23,11 +25,6 @@ Install the required libraries and start the server (needs Python 3.5+)
 $ pip install -r requirements.txt
 $ python runserver.py
 ```
-
-License
-----
-
-MIT
 
 
    [japronto]: <https://github.com/squeaky-pl/japronto>
