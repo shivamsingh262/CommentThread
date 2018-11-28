@@ -1,3 +1,3 @@
 import mongoengine
 
-mongoengine.connect('commenter',connect=False)
+mongoengine.connect('commenter', connect=False)

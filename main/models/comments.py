@@ -2,9 +2,11 @@ from ..settings import mongoengine as me
 import uuid
 from datetime import datetime as dt
 
+
 def generate_token():
     token = uuid.uuid4()
     return token.hex
+
 
 class Website(me.Document):
     url = me.StringField()
