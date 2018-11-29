@@ -19,6 +19,7 @@ class Comment(me.Document):
     text = me.StringField()
     added_by = me.StringField()
     timestamp = me.DateTimeField(default=dt.now)
+    comment_id = me.StringField(default=generate_token)
 
 
 class User(me.Document):
