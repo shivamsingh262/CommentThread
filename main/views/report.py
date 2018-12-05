@@ -2,21 +2,55 @@ from ..helpers import *
 
 
 def website_save(request):
-    data = request.json
-    token = save_website(data['url'])
-    return request.Response(json={'token': token})
+    response = {'token': None, 'summary': 'Website saved'}
+    code = 200
+    try:
+        user_id = request.authenticate()
+        if user_id:
+            data = request.json
+            response['token'] = save_website(data['url'], user_id)
+        else:
+            code = 403
+            response['summary'] = "Not Authorized"
+    except Exception as e:
+        code = 502
+        response['summary'] = str(e)
+    return request.Response(json=response, code=code)
 
 
 def comment_save(request):
-    data = request.json
-    comment_id = save_comment(data['text'], data['parent_id'])
-    return request.Response(json={'comment_id': comment_id})
+    response = {'comment_id': None, 'summary': 'Comment saved'}
+    code = 200
+    try:
+        user_id = request.authenticate()
+        if user_id:
+            data = request.json
+            response['comment_id'] = save_comment(
+                data['text'], data['parent_id'], user_id)
+        else:
+            code = 403
+            response['summary'] = "Not Authorized"
+    except Exception as e:
+        code = 502
+        response['summary'] = str(e)
+    return request.Response(json=response, code=code)
 
 
 def comment_get(request):
-    data = request.query
-    data = get_comment(data['parent_id'])
-    return request.Response(json={'data': data})
+    response = {'data': [], 'summary': 'Comments Data'}
+    code = 200
+    try:
+        user_id = request.authenticate()
+        if user_id:
+            data = request.query
+            response['data'] = get_comment(data['parent_id'])
+        else:
+            code = 403
+            response['summary'] = "Not Authorized"
+    except Exception as e:
+        code = 502
+        response['summary'] = str(e)
+    return request.Response(json=response, code=code)
 
 
 def user_register(request):
@@ -33,9 +67,9 @@ def user_login(request):
     data = request.json
     token = login_user(data['username'], data['password'])
     if token:
-        result = {'data': token.decode("utf-8")}
+        response = {'data': token.decode("utf-8")}
         status = 200
     else:
-        result = {'data': 'Error logging in'}
+        response = {'data': 'Error logging in'}
         status = 400
-    return request.Response(json=result, code=status)
+    return request.Response(json=response, code=status)

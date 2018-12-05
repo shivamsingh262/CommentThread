@@ -20,6 +20,7 @@ class Website(me.Document):
     url = me.StringField()
     token = me.StringField(default=generate_token)
     timestamp = me.DateTimeField(default=dt.now)
+    added_by = me.StringField()
 
 
 class Comment(me.Document):

@@ -4,17 +4,23 @@ from mongoengine import DoesNotExist
 from .middleware import *
 
 
-def save_website(url):
-    website = Website()
-    website.url = url
-    website.save()
+def save_website(url, user_id):
+    try:
+        website = Website.objects.get(url=url)
+        return None
+    except DoesNotExist:
+        website = Website()
+        website.url = url
+        website.added_by = user_id
+        website.save()
     return website.token
 
 
-def save_comment(text, parent_id):
+def save_comment(text, parent_id, user_id):
     comment = Comment()
     comment.text = text
     comment.parent_id = parent_id
+    comment.added_by = user_id
     comment.save()
     return comment.comment_id
 
@@ -26,7 +32,9 @@ def get_comment(parent_id):
         di = {}
         di['text'] = comment['text']
         di['comment_id'] = comment['comment_id']
-        di['added_by'] = None
+        di['added_by'] = comment['added_by']
+        di['added_by_name'] = User.objects.get(
+            user_id=comment['added_by'])['username']
         di['timestamp'] = dt.strftime(comment['timestamp'], '%Y-%m-%d %H:%M')
         di['comments'] = get_comment(comment['comment_id'])
         data.append(di)

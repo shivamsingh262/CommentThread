@@ -1,5 +1,8 @@
 from main import app
 from .report import *
+from ..helpers import authenticate
+
+app.extend_request(authenticate)
 
 app.router.add_route("/website/save", website_save, methods=['POST'])
 app.router.add_route("/comment/save", comment_save, methods=['POST'])
