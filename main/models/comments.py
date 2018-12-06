@@ -37,3 +37,10 @@ class User(me.Document):
     email = me.StringField(unique=True, required=True)
     password = me.StringField(required=True)
     is_active = me.BooleanField(default=False)
+
+
+class Vote(me.Document):
+    vote_type = me.BooleanField(default=False)
+    comment_id = me.StringField()
+    added_by = me.StringField()
+    timestamp = me.DateTimeField(default=dt.now)

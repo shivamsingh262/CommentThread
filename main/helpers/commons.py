@@ -2,6 +2,7 @@ from ..models import *
 from datetime import datetime as dt
 from mongoengine import DoesNotExist
 from .middleware import *
+from mongoengine.queryset.visitor import Q
 
 
 def save_website(url, user_id):
@@ -25,6 +26,13 @@ def save_comment(text, parent_id, user_id):
     return comment.comment_id
 
 
+def get_votes(comment_id):
+    votes = Vote.objects(comment_id=comment_id)
+    upvotes = sum(1 for x in votes if x['vote_type'] == True)
+    downvotes = len(votes) - upvotes
+    return upvotes, downvotes
+
+
 def get_comment(parent_id):
     comments = Comment.objects(parent_id=parent_id)
     data = []
@@ -36,6 +44,9 @@ def get_comment(parent_id):
         di['added_by_name'] = User.objects.get(
             user_id=comment['added_by'])['username']
         di['timestamp'] = dt.strftime(comment['timestamp'], '%Y-%m-%d %H:%M')
+        upvotes, downvotes = get_votes(comment['comment_id'])
+        di['upvotes'] = upvotes
+        di['downvotes'] = downvotes
         di['comments'] = get_comment(comment['comment_id'])
         data.append(di)
     return data
@@ -63,3 +74,19 @@ def login_user(username, password):
         return generate_user_token(username)
     except DoesNotExist:
         return False
+
+
+def add_vote(comment_id, vote_type, user_id):
+    try:
+        vote = Vote.objects.get(comment_id=comment_id, added_by=user_id)
+        if vote.vote_type != vote_type:
+            vote.vote_type = vote_type
+            vote.save()
+        else:
+            vote.delete()
+    except DoesNotExist:
+        vote = Vote()
+        vote.comment_id = comment_id
+        vote.vote_type = vote_type
+        vote.added_by = user_id
+        vote.save()

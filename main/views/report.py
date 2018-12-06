@@ -54,22 +54,50 @@ def comment_get(request):
 
 
 def user_register(request):
-    data = request.json
-    success = register_user(data['email'], data['username'], data['password'])
-    if success:
-        status = 200
-    else:
-        status = 400
-    return request.Response(json={}, code=status)
+    response = {'summary': 'Registration successful'}
+    code = 200
+    try:
+        data = request.json
+        success = register_user(
+            data['email'], data['username'], data['password'])
+        if not success:
+            code = 400
+            response['summary'] = 'Error in registering'
+    except Exception as e:
+        code = 502
+        response['summary'] = str(e)
+    return request.Response(json=response, code=code)
 
 
 def user_login(request):
-    data = request.json
-    token = login_user(data['username'], data['password'])
-    if token:
-        response = {'data': token.decode("utf-8")}
-        status = 200
-    else:
-        response = {'data': 'Error logging in'}
-        status = 400
-    return request.Response(json=response, code=status)
+    response = {'token': None, 'summary': 'User logged in'}
+    code = 200
+    try:
+        data = request.json
+        token = login_user(data['username'], data['password'])
+        if token:
+            response['token'] = token.decode("utf-8")
+        else:
+            code = 400
+            response['summary'] = 'Error logging in'
+    except Exception as e:
+        code = 502
+        response['summary'] = str(e)
+    return request.Response(json=response, code=code)
+
+
+def vote_add(request):
+    response = {'summary': 'Vote added'}
+    code = 200
+    try:
+        user_id = request.authenticate()
+        if user_id:
+            data = request.json
+            add_vote(data['comment_id'], data['vote_type'], user_id)
+        else:
+            code = 403
+            response['summary'] = "Not Authorized"
+    except Exception as e:
+        code = 502
+        response['summary'] = str(e)
+    return request.Response(json=response, code=code)
