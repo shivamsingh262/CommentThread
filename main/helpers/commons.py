@@ -3,6 +3,7 @@ from datetime import datetime as dt
 from mongoengine import DoesNotExist
 from .middleware import *
 from mongoengine.queryset.visitor import Q
+from ..settings import *
 
 
 def save_website(url, user_id):
@@ -90,3 +91,11 @@ def add_vote(comment_id, vote_type, user_id):
         vote.vote_type = vote_type
         vote.added_by = user_id
         vote.save()
+
+
+def render_page(token):
+    website = Website.objects.get(token=token)
+    comments = get_comment(token)
+    template_var = {'website':website['url'],'comments':comments}
+    html_out = main_template.render(template_var)
+    return html_out
