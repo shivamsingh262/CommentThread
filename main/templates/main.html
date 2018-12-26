@@ -1,8 +1,8 @@
-<div>
-    <p><b>Website:</b> {{ website }}</p>
-    {% for comment in comments %}
-        <p><i>{{ comment.text }}</i></p>
-        <p>-- {{ comment.added_by_name }}</p>
-        <p>{{ comment.timestamp }}</p>
-    {% endfor %}
-</div>
+{% extends "base.html" %}
+{% block content %}
+{% for comment in comments %}
+    <p><i>{{ comment.text }}</i></p>
+    <p>-- {{ comment.added_by_name }}</p>
+    <p>{{ comment.timestamp }}</p>
+{% endfor %}
+{% endblock %}
