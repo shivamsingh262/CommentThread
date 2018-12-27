@@ -77,9 +77,26 @@ def user_login(request):
         token = login_user(data['username'], data['password'])
         if token:
             response['token'] = token.decode("utf-8")
+            response['username'] = data['username']
         else:
             code = 400
             response['summary'] = 'Error logging in'
+    except Exception as e:
+        code = 502
+        response['summary'] = str(e)
+    return request.Response(json=response, code=code)
+
+
+def user_get(request):
+    response = {'summary': 'User Info'}
+    code = 200
+    try:
+        user_id = request.authenticate()
+        if user_id:
+            response['username'] = get_user(user_id)
+        else:
+            code = 400
+            response['summary'] = 'Error getting details'
     except Exception as e:
         code = 502
         response['summary'] = str(e)

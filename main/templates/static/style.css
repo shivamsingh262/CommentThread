@@ -1,0 +1,8 @@
+.comment-body {
+    background-color: lightblue;
+    margin: 4px 4px 4px 4px;
+}
+
+#login_form {
+    display: none;
+}

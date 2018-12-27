@@ -77,6 +77,14 @@ def login_user(username, password):
         return False
 
 
+def get_user(user_id):
+    try:
+        user = User.objects.get(user_id=user_id)
+        return user.username
+    except DoesNotExist:
+        return None
+
+
 def add_vote(comment_id, vote_type, user_id):
     try:
         vote = Vote.objects.get(comment_id=comment_id, added_by=user_id)
