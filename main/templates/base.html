@@ -1,17 +1,43 @@
 <html>
-<head>
-    <title>Comments</title>
-    <style type="text/css">
-        {% include "static/style.css" %}
-    </style>
-    <script>
-        {% include "static/script.js" %}
-    </script>
-</head>
-<body>
-    <div>
-        {% block content %}
-        {% endblock %}
-    </div>
-</body>
+    <head>
+        <title>Comments</title>
+        <style type="text/css">
+            {% include "static/style.css" %}
+        </style>
+        <script>
+            {% include "static/script.js" %}
+        </script>
+    </head>
+    <body>
+        <div>
+            <div id="show_login">
+                <button id="login_btn" onclick="show_login_div()">Login</button>
+            </div>
+            <div id="show_logout">
+                <div id="user_info"></div>
+                <button id="logout_btn" onclick="logout()">Logout</button>
+            </div>
+            <div id="login_form">
+                <div>
+                    <input type="text" id="username" placeholder="Username"/>
+                </div>
+                <div>
+                    <input type="password" id="password" placeholder="Password"/>
+                </div>
+                <div>
+                    <button id="login_btn" onclick="login_user()">Login</button>
+                </div>
+            </div>
+            <div id="comment_box">
+                <div>
+                    <input type="text" id="comment" placeholder="Add Comment"/>
+                </div>
+                <div>
+                    <button id="comment_btn" onclick="add_comment()">Add</button>
+                </div>
+            </div>
+            <div id="comment_body">
+            </div>
+        </div>
+    </body>
 </html>

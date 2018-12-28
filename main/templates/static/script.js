@@ -42,10 +42,18 @@ user_request.onreadystatechange = function() {
     }
 }
 
-var comment_request = new XMLHttpRequest();
-comment_request.onreadystatechange = function() {
-    if (comment_request.readyState == 4){
-        window.alert('Done');
+var add_comment_request = new XMLHttpRequest();
+add_comment_request.onreadystatechange = function() {
+    if (add_comment_request.readyState == 4){
+        get_comment();
+        document.getElementById('comment').value = null;
+    }
+}
+
+var get_comment_request = new XMLHttpRequest();
+get_comment_request.onreadystatechange = function() {
+    if (get_comment_request.readyState == 4){
+        document.getElementById('comment_body').innerHTML = get_comment_request.response;
     }
 }
 
@@ -74,10 +82,18 @@ function logout() {
 function add_comment() {
     var text = document.getElementById('comment').value;
     var parent_id = site;
-    comment_request.open('POST','/comment/save',true);
-    comment_request.setRequestHeader("Content-type", "application/json");
-    comment_request.setRequestHeader("Token", token);
-    comment_request.send(JSON.stringify({text:text,parent_id:parent_id}));
+    add_comment_request.open('POST','/comment/save',true);
+    add_comment_request.setRequestHeader("Content-type", "application/json");
+    add_comment_request.setRequestHeader("Token", token);
+    add_comment_request.send(JSON.stringify({text:text,parent_id:parent_id}));
+}
+
+function get_comment() {
+    var url = "/comment/get?site="+site;
+    get_comment_request.open('GET',url,true);
+    get_comment_request.setRequestHeader("Content-type", "text/html");
+    get_comment_request.setRequestHeader("Token", token);
+    get_comment_request.send();
 }
 
 window.onload = function(){
@@ -91,4 +107,5 @@ window.onload = function(){
     else{
         ask_login_div();
     }
+    get_comment();
 }

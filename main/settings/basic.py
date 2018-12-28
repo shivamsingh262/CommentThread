@@ -9,6 +9,7 @@ MEDIA_ROOT = path(ROOT, 'static/')
 TEMPLATE_ROOT = path(ROOT, 'templates/')
 env = Environment(loader=FileSystemLoader(TEMPLATE_ROOT))
 
-main_template = env.get_template("main.html")
+main_template = env.get_template("base.html")
+comment_template = env.get_template("main.html")
 
 mongoengine.connect('commenter', connect=False)

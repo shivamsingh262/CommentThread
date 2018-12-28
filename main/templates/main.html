@@ -1,32 +1,4 @@
-{% extends "base.html" %}
-{% block content %}
 <div>{{ comments|length }} Comments</div>
-<div id="show_login">
-    <button id="login_btn" onclick="show_login_div()">Login</button>
-</div>
-<div id="show_logout">
-    <div id="user_info"></div>
-    <button id="logout_btn" onclick="logout()">Logout</button>
-</div>
-<div id="login_form">
-    <div>
-        <input type="text" id="username" placeholder="Username"/>
-    </div>
-    <div>
-        <input type="password" id="password" placeholder="Password"/>
-    </div>
-    <div>
-        <button id="login_btn" onclick="login_user()">Login</button>
-    </div>
-</div>
-<div id="comment_box">
-    <div>
-        <input type="text" id="comment" placeholder="Add Comment"/>
-    </div>
-    <div>
-        <button id="comment_btn" onclick="add_comment()">Add</button>
-    </div>
-</div>
 {% for comment in comments %}
 <div class="comment-body">
     <div>{{ comment.added_by_name }}</div>
@@ -36,4 +8,3 @@
     <div>{{ comment.downvotes }}</div>
 </div>
 {% endfor %}
-{% endblock %}

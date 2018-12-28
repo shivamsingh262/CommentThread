@@ -101,9 +101,12 @@ def add_vote(comment_id, vote_type, user_id):
         vote.save()
 
 
-def render_page(token):
-    website = Website.objects.get(token=token)
+def render_page():
+    html_out = main_template.render({})
+    return html_out
+
+
+def render_comments(token):
     comments = get_comment(token)
-    template_var = {'website':website['url'],'comments':comments}
-    html_out = main_template.render(template_var)
+    html_out = comment_template.render({'comments':comments})
     return html_out
