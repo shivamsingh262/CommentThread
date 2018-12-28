@@ -9,9 +9,23 @@
     <button id="logout_btn" onclick="logout()">Logout</button>
 </div>
 <div id="login_form">
-    <div><input type="text" id="username" placeholder="Username"/></div>
-    <div><input type="password" id="password" placeholder="Password"/></div>
-    <div><button id="login" onclick="login_user()">Login</button></div>
+    <div>
+        <input type="text" id="username" placeholder="Username"/>
+    </div>
+    <div>
+        <input type="password" id="password" placeholder="Password"/>
+    </div>
+    <div>
+        <button id="login_btn" onclick="login_user()">Login</button>
+    </div>
+</div>
+<div id="comment_box">
+    <div>
+        <input type="text" id="comment" placeholder="Add Comment"/>
+    </div>
+    <div>
+        <button id="comment_btn" onclick="add_comment()">Add</button>
+    </div>
 </div>
 {% for comment in comments %}
 <div class="comment-body">
